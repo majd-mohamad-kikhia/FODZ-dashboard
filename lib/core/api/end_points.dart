@@ -8,7 +8,7 @@ class EndPoints {
   EndPoints._internalKey();
 
   static const String baseUrl =
-      'https://alsatesting.servemp3.com/app2/api/'; //'http://192.168.43.171:2801/';
+      'https://fodz.ma-core.net/api/'; //'http://192.168.43.171:2801/';
   static const String login = 'auth/admin/login';
   static const String getRestaurant = 'admin/restaurants';
   static const String getProducts = 'admin/orders';

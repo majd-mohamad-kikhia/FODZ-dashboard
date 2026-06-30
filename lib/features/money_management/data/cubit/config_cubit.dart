@@ -22,6 +22,7 @@ class ConfigState {
   final String afterBasePrice;
   final String dManPercentage;
   final String systemFees;
+  final String bankNumber;
   
   // Kill switches
   final bool homeKillSwitch;
@@ -38,6 +39,7 @@ class ConfigState {
     this.afterBasePrice = '',
     this.dManPercentage = '',
     this.systemFees = '',
+    this.bankNumber = '',
     this.homeKillSwitch = false,
     this.restaurantKillSwitch = false,
     this.plessingKillSwitch = false,
@@ -53,6 +55,7 @@ class ConfigState {
     String? afterBasePrice,
     String? dManPercentage,
     String? systemFees,
+    String? bankNumber,
     bool? homeKillSwitch,
     bool? restaurantKillSwitch,
     bool? plessingKillSwitch,
@@ -67,6 +70,7 @@ class ConfigState {
       afterBasePrice: afterBasePrice ?? this.afterBasePrice,
       dManPercentage: dManPercentage ?? this.dManPercentage,
       systemFees: systemFees ?? this.systemFees,
+      bankNumber: bankNumber ?? this.bankNumber,
       homeKillSwitch: homeKillSwitch ?? this.homeKillSwitch,
       restaurantKillSwitch: restaurantKillSwitch ?? this.restaurantKillSwitch,
       plessingKillSwitch: plessingKillSwitch ?? this.plessingKillSwitch,
@@ -83,6 +87,7 @@ class ConfigCubit extends Cubit<ConfigState> {
   final TextEditingController afterBasePriceController = TextEditingController();
   final TextEditingController dManPercentageController = TextEditingController();
   final TextEditingController systemFeesController = TextEditingController();
+  final TextEditingController bankNumberController = TextEditingController();
 
   ConfigCubit() 
       : _client = ConfigClientImpl(NetworkServices()),
@@ -114,6 +119,7 @@ class ConfigCubit extends Cubit<ConfigState> {
           String afterBasePrice = '';
           String dManPercentage = '';
           String systemFees = '';
+          String bankNumber = '';
           bool homeKillSwitch = false;
           bool restaurantKillSwitch = false;
           bool plessingKillSwitch = false;
@@ -140,6 +146,11 @@ class ConfigCubit extends Cubit<ConfigState> {
                 systemFees = config.value;
                 systemFeesController.text = config.value;
                 break;
+              case 'bankNumber':
+              case 'BankNumber':
+                bankNumber = config.value;
+                bankNumberController.text = config.value;
+                break;
               case 'homeKillSwitch':
                 homeKillSwitch = config.value.toLowerCase() == 'true';
                 break;
@@ -162,6 +173,7 @@ class ConfigCubit extends Cubit<ConfigState> {
               afterBasePrice: afterBasePrice,
               dManPercentage: dManPercentage,
               systemFees: systemFees,
+              bankNumber: bankNumber,
               homeKillSwitch: homeKillSwitch,
               restaurantKillSwitch: restaurantKillSwitch,
               plessingKillSwitch: plessingKillSwitch,
@@ -192,6 +204,7 @@ class ConfigCubit extends Cubit<ConfigState> {
       ConfigItem(name: 'afterBasePrice', value: afterBasePriceController.text),
       ConfigItem(name: 'dManPersentage', value: dManPercentageController.text),
       ConfigItem(name: 'systemFees', value: systemFeesController.text),
+      ConfigItem(name: 'bankNumber', value: bankNumberController.text),
     ];
 
     try {
@@ -290,6 +303,7 @@ class ConfigCubit extends Cubit<ConfigState> {
     afterBasePriceController.dispose();
     dManPercentageController.dispose();
     systemFeesController.dispose();
+    bankNumberController.dispose();
     return super.close();
   }
 }

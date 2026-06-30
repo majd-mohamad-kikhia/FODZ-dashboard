@@ -16,6 +16,8 @@ class RestaurantModel {
   final String? photoUrl;
   final String? coverUrl;
   final String? pdfUrl;
+  final String? receiptUrl;
+  final String? paymentReceiptUrl;
 
   RestaurantModel({
     required this.id,
@@ -35,6 +37,8 @@ class RestaurantModel {
     this.photoUrl,
     this.coverUrl,
     this.pdfUrl,
+    this.receiptUrl,
+    this.paymentReceiptUrl,
   })  : totalRates = totalRates ?? '0',
        averageRating = averageRating ?? '0.0';
 
@@ -57,6 +61,8 @@ class RestaurantModel {
       photoUrl: json['photoUrl'] as String?,
       coverUrl: json['coverUrl'] as String?,
       pdfUrl: json['pdfUrl'] as String?,
+      receiptUrl: json['receiptUrl'] as String?,
+      paymentReceiptUrl: json['paymentReceiptUrl'] as String?,
     );
   }
 
@@ -79,6 +85,8 @@ class RestaurantModel {
       'photoUrl': photoUrl,
       'coverUrl': coverUrl,
       'pdfUrl': pdfUrl,
+      'receiptUrl': receiptUrl,
+      'paymentReceiptUrl': paymentReceiptUrl,
     };
   }
 

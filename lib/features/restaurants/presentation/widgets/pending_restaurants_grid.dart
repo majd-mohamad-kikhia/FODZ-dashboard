@@ -64,7 +64,7 @@ class PendingRestaurantsGrid extends StatelessWidget {
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 1.1,
+            childAspectRatio: 0.85,
             crossAxisSpacing: 20,
             mainAxisSpacing: 20,
           ),
@@ -196,37 +196,86 @@ class _PendingRestaurantCardState extends State<_PendingRestaurantCard> {
                       ],
                     ),
                     Spacer(),
-                    if (widget.restaurant.pdfUrl != null && widget.restaurant.pdfUrl!.isNotEmpty)
+                    if (widget.restaurant.pdfUrl != null && widget.restaurant.pdfUrl!.isNotEmpty ||
+                        widget.restaurant.paymentReceiptUrl != null && widget.restaurant.paymentReceiptUrl!.isNotEmpty)
                       Padding(
                         padding: EdgeInsets.only(bottom: 8),
-                        child: MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: GestureDetector(
-                            onTap: () => _openPdf(widget.restaurant.pdfUrl!),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: Colors.blue.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: Colors.blue, width: 1),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(Icons.picture_as_pdf, size: 16, color: Colors.blue),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    'عرض الملف',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.blue,
+                        child: Row(
+                          children: [
+                            if (widget.restaurant.pdfUrl != null && widget.restaurant.pdfUrl!.isNotEmpty)
+                              Expanded(
+                                child: MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: GestureDetector(
+                                    onTap: () => _openUrl(widget.restaurant.pdfUrl!),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(6),
+                                        border: Border.all(color: Colors.blue, width: 1),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.picture_as_pdf, size: 14, color: Colors.blue),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            'عرض الملف',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.blue,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
+                            if (widget.restaurant.pdfUrl != null && widget.restaurant.pdfUrl!.isNotEmpty &&
+                                widget.restaurant.paymentReceiptUrl != null && widget.restaurant.paymentReceiptUrl!.isNotEmpty)
+                              SizedBox(width: 6),
+                            if (widget.restaurant.paymentReceiptUrl != null && widget.restaurant.paymentReceiptUrl!.isNotEmpty)
+                              Expanded(
+                                child: MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: GestureDetector(
+                                    onTap: () => _openUrl(widget.restaurant.paymentReceiptUrl!),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: Colors.green.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(6),
+                                        border: Border.all(color: Colors.green, width: 1),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            _isPdf(widget.restaurant.paymentReceiptUrl!)
+                                                ? Icons.receipt_long
+                                                : Icons.image_outlined,
+                                            size: 14,
+                                            color: Colors.green,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            'إيصال الدفع',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                     Row(
@@ -358,15 +407,18 @@ class _PendingRestaurantCardState extends State<_PendingRestaurantCard> {
     }
   }
 
-  void _openPdf(String pdfUrl) {
-    // Open PDF in new tab for web applications
+  bool _isPdf(String url) {
+    final lower = url.toLowerCase();
+    return lower.endsWith('.pdf') || lower.contains('.pdf?');
+  }
+
+  void _openUrl(String url) {
     try {
-      html.window.open(pdfUrl, '_blank');
+      html.window.open(url, '_blank');
     } catch (e) {
-      // Fallback: show error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('فشل في فتح PDF'),
+          content: const Text('فشل في فتح الملف'),
           backgroundColor: Colors.red,
         ),
       );

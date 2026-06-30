@@ -12,6 +12,8 @@ class PendingRestaurantModel {
   final String? photoUrl;
   final String? coverUrl;
   final String? pdfUrl;
+  final String? receiptUrl;
+  final String? paymentReceiptUrl;
 
   PendingRestaurantModel({
     required this.id,
@@ -27,6 +29,8 @@ class PendingRestaurantModel {
     this.photoUrl,
     this.coverUrl,
     this.pdfUrl,
+    this.receiptUrl,
+    this.paymentReceiptUrl,
   });
 
   factory PendingRestaurantModel.fromJson(Map<String, dynamic> json) {
@@ -44,6 +48,8 @@ class PendingRestaurantModel {
       photoUrl: json['photoUrl'] as String?,
       coverUrl: json['coverUrl'] as String?,
       pdfUrl: json['pdfUrl'] as String?,
+      receiptUrl: json['receiptUrl'] as String?,
+      paymentReceiptUrl: json['paymentReceiptUrl'] as String?,
     );
   }
 
@@ -62,6 +68,8 @@ class PendingRestaurantModel {
       'photoUrl': photoUrl,
       'coverUrl': coverUrl,
       'pdfUrl': pdfUrl,
+      'receiptUrl': receiptUrl,
+      'paymentReceiptUrl': paymentReceiptUrl,
     };
   }
 

@@ -150,6 +150,13 @@ class _MoneyManagementView extends StatelessWidget {
                         width: fieldWidth,
                         controller: cubit.dManPercentageController,
                       ),
+                      _PricingField(
+                        label: 'رقم الحساب البنكي',
+                        hint: 'مثال: 1234567890',
+                        width: fieldWidth,
+                        controller: cubit.bankNumberController,
+                        keyboardType: TextInputType.text,
+                      ),
                     ],
                   );
                 },
@@ -187,12 +194,14 @@ class _PricingField extends StatelessWidget {
     required this.hint,
     required this.width,
     this.controller,
+    this.keyboardType,
   });
 
   final String label;
   final String hint;
   final double width;
   final TextEditingController? controller;
+  final TextInputType? keyboardType;
 
   OutlineInputBorder _border(Color color) {
     return OutlineInputBorder(
@@ -235,7 +244,7 @@ class _PricingField extends StatelessWidget {
             TextField(
               controller: controller,
               textDirection: TextDirection.rtl,
-              keyboardType: TextInputType.number,
+              keyboardType: keyboardType ?? TextInputType.number,
               decoration: InputDecoration(
                 hintText: hint,
                 hintStyle: TextStyle(fontSize: 12.rf, color: AppColors.grey500),

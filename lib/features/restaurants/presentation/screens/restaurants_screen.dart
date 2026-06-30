@@ -442,38 +442,86 @@ class _RestaurantCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 8),
-                  // PDF Link
-                  if (restaurant.pdfUrl != null && restaurant.pdfUrl!.isNotEmpty)
+                  if (restaurant.pdfUrl != null && restaurant.pdfUrl!.isNotEmpty ||
+                      restaurant.paymentReceiptUrl != null && restaurant.paymentReceiptUrl!.isNotEmpty)
                     Padding(
                       padding: EdgeInsets.only(bottom: 8),
-                      child: MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: GestureDetector(
-                          onTap: () => _openPdf(context, restaurant.pdfUrl!),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: Colors.blue, width: 1),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.picture_as_pdf, size: 16, color: Colors.blue),
-                                SizedBox(width: 4),
-                                Text(
-                                  'عرض الملف',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.blue,
+                      child: Row(
+                        children: [
+                          if (restaurant.pdfUrl != null && restaurant.pdfUrl!.isNotEmpty)
+                            Expanded(
+                              child: MouseRegion(
+                                cursor: SystemMouseCursors.click,
+                                child: GestureDetector(
+                                  onTap: () => _openUrl(context, restaurant.pdfUrl!),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(color: Colors.blue, width: 1),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.picture_as_pdf, size: 14, color: Colors.blue),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          'عرض الملف',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
+                          if (restaurant.pdfUrl != null && restaurant.pdfUrl!.isNotEmpty &&
+                              restaurant.paymentReceiptUrl != null && restaurant.paymentReceiptUrl!.isNotEmpty)
+                            SizedBox(width: 6),
+                          if (restaurant.paymentReceiptUrl != null && restaurant.paymentReceiptUrl!.isNotEmpty)
+                            Expanded(
+                              child: MouseRegion(
+                                cursor: SystemMouseCursors.click,
+                                child: GestureDetector(
+                                  onTap: () => _openUrl(context, restaurant.paymentReceiptUrl!),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(color: Colors.green, width: 1),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          _isPdf(restaurant.paymentReceiptUrl!)
+                                              ? Icons.receipt_long
+                                              : Icons.image_outlined,
+                                          size: 14,
+                                          color: Colors.green,
+                                        ),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          'إيصال الدفع',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
                   SizedBox(height: 8),
@@ -537,15 +585,18 @@ class _RestaurantCard extends StatelessWidget {
     );
   }
 
-  void _openPdf(BuildContext context, String pdfUrl) {
-    // Open PDF in new tab for web applications
+  bool _isPdf(String url) {
+    final lower = url.toLowerCase();
+    return lower.endsWith('.pdf') || lower.contains('.pdf?');
+  }
+
+  void _openUrl(BuildContext context, String url) {
     try {
-      html.window.open(pdfUrl, '_blank');
+      html.window.open(url, '_blank');
     } catch (e) {
-      // Fallback: show error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('فشل في فتح PDF'),
+          content: const Text('فشل في فتح الملف'),
           backgroundColor: Colors.red,
         ),
       );
