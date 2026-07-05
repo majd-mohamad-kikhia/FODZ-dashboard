@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodzdashbord/core/utils/appColors.dart';
 import 'package:foodzdashbord/core/utils/constants.dart';
 import 'package:foodzdashbord/core/widgets/local_app_bar.dart';
+import 'package:foodzdashbord/core/widgets/app_cached_image.dart';
 import 'package:foodzdashbord/features/category_sections/data/models/category_section_response.dart';
 
 class CategoryProductsScreen extends StatelessWidget {
@@ -75,25 +76,34 @@ class _ProductCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            width: 60.rw,
-            height: 60.rw,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.primaryRed.withOpacity(0.14),
-                  AppColors.secondaryRed.withOpacity(0.08),
-                ],
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: AppCachedImage(
+              imageUrl: product.photoUrl ?? '',
+              width: 60.rw,
+              height: 60.rw,
+              fit: BoxFit.cover,
+              errorWidget: (context) => Container(
+                width: 60.rw,
+                height: 60.rw,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.primaryRed.withOpacity(0.14),
+                      AppColors.secondaryRed.withOpacity(0.08),
+                    ],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.primaryRed.withOpacity(0.14)),
+                ),
+                child: Icon(
+                  Icons.shopping_bag_rounded,
+                  color: AppColors.primaryRed,
+                  size: 24.rf,
+                ),
               ),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.primaryRed.withOpacity(0.14)),
-            ),
-            child: Icon(
-              Icons.shopping_bag_rounded,
-              color: AppColors.primaryRed,
-              size: 24.rf,
             ),
           ),
           SizedBox(width: 12.rw),

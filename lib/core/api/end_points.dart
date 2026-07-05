@@ -8,7 +8,7 @@ class EndPoints {
   EndPoints._internalKey();
 
   static const String baseUrl =
-      'https://fodz.ma-core.net/api/'; //'http://192.168.43.171:2801/';
+      'http://10.20.127.59:2801/api/'; //'https://fodz.ma-core.net/api/';
   static const String login = 'auth/admin/login';
   static const String getRestaurant = 'admin/restaurants';
   static const String getProducts = 'admin/orders';
@@ -51,6 +51,9 @@ class EndPoints {
   static const String declinePendingResAndHome='admin/delete-restaurant/';
   static const String cancelOrder='orders/admin/cancel-approved-cash';
   static const String giveWarning='admin/warnings';
+  static const String getCities = 'cities';
+  static const String createCity = 'cities';
+  static const String deleteCity = 'cities/';
   
   static Map<String, String> baseHeaders = {
     AppStrings.accept: "${AppStrings.applicationJson}, */*",

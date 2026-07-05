@@ -22,6 +22,7 @@ import 'package:foodzdashbord/features/restaurant_sections/presentation/cubit/re
 import 'package:foodzdashbord/features/restaurant_sections/data/api/restaurant_sections_client.dart';
 import 'package:foodzdashbord/features/product_sections/presentation/cubit/product_sections_cubit.dart';
 import 'package:foodzdashbord/features/product_sections/data/api/product_sections_client.dart';
+import 'package:foodzdashbord/features/cities/presentation/screens/cities_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -299,6 +300,8 @@ class _ContentArea extends StatelessWidget {
             return const _BlacklistContent();
           case HomeSection.homeAds:
             return const HomeAdsContent();
+          case HomeSection.cities:
+            return const _CitiesContent();
         }
       },
     );
@@ -489,155 +492,165 @@ class _ToggleButtonsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeNavCubit, HomeNavState>(
       builder: (context, state) {
-        return Row(
-          children: [
-            Expanded(
-              child: _SwitchButton(
-                label: 'المطاعم',
-                isEnabled: state.isRestaurantsEnabled,
-                onChanged: (value) => _showConfirmationDialog(
-                  context,
-                  'المطاعم',
-                  value,
-                  () => context.read<HomeNavCubit>().toggleRestaurants(),
-                ),
-              ),
-            ),
-            SizedBox(width: 16.rw),
-            Expanded(
-              child: _SwitchButton(
-                label: 'الاسر المنتجة',
-                isEnabled: state.isHomeProducersEnabled,
-                onChanged: (value) => _showConfirmationDialog(
-                  context,
-                  'الاسر المنتجة',
-                  value,
-                  () => context.read<HomeNavCubit>().toggleHomeProducers(),
-                ),
-              ),
-            ),
-            SizedBox(width: 16.rw),
-            Expanded(
-              child: _SwitchButton(
-                label: 'النعمة',
-                isEnabled: state.isNeamaEnabled,
-                onChanged: (value) => _showConfirmationDialog(
-                  context,
-                  'النعمة',
-                  value,
-                  () => context.read<HomeNavCubit>().toggleNeama(),
-                ),
-              ),
-            ),
-          ],
-        );
+        // return Row(
+        //   children: [
+        //     Expanded(
+        //       child: _SwitchButton(
+        //         label: 'المطاعم',
+        //         isEnabled: state.isRestaurantsEnabled,
+        //         onChanged: (value) => _showConfirmationDialog(
+        //           context,
+        //           'المطاعم',
+        //           value,
+        //           () => context.read<HomeNavCubit>().toggleRestaurants(),
+        //         ),
+        //       ),
+        //     ),
+        //     SizedBox(width: 16.rw),
+        //     Expanded(
+        //       child: _SwitchButton(
+        //         label: 'الاسر المنتجة',
+        //         isEnabled: state.isHomeProducersEnabled,
+        //         onChanged: (value) => _showConfirmationDialog(
+        //           context,
+        //           'الاسر المنتجة',
+        //           value,
+        //           () => context.read<HomeNavCubit>().toggleHomeProducers(),
+        //         ),
+        //       ),
+        //     ),
+        //     SizedBox(width: 16.rw),
+        //     Expanded(
+        //       child: _SwitchButton(
+        //         label: 'النعمة',
+        //         isEnabled: state.isNeamaEnabled,
+        //         onChanged: (value) => _showConfirmationDialog(
+        //           context,
+        //           'النعمة',
+        //           value,
+        //           () => context.read<HomeNavCubit>().toggleNeama(),
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // );
+        return const SizedBox.shrink();
       },
     );
   }
 
-  void _showConfirmationDialog(
-    BuildContext context,
-    String sectionName,
-    bool newValue,
-    VoidCallback onConfirm,
-  ) {
-    showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(
-          'تأكيد التغيير',
-          style: TextStyle(
-            fontSize: 18.rf,
-            fontWeight: FontWeight.w700,
-            color: AppColors.textDark,
-          ),
-        ),
-        content: Text(
-          'هل أنت متأكد من ${newValue ? 'تفعيل' : 'إلغاء تفعيل'} قسم $sectionName؟',
-          style: TextStyle(fontSize: 14.rf, color: AppColors.grey600),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
-            child: Text(
-              'إلغاء',
-              style: TextStyle(fontSize: 14.rf, color: AppColors.grey600),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(dialogContext);
-              onConfirm();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryRed,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: Text(
-              'تأكيد',
-              style: TextStyle(fontSize: 14.rf, fontWeight: FontWeight.w600),
-            ),
-          ),
-        ],
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        backgroundColor: Colors.white,
-      ),
-    );
-  }
+  // void _showConfirmationDialog(
+  //   BuildContext context,
+  //   String sectionName,
+  //   bool newValue,
+  //   VoidCallback onConfirm,
+  // ) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (dialogContext) => AlertDialog(
+  //       title: Text(
+  //         'تأكيد التغيير',
+  //         style: TextStyle(
+  //           fontSize: 18.rf,
+  //           fontWeight: FontWeight.w700,
+  //           color: AppColors.textDark,
+  //         ),
+  //       ),
+  //       content: Text(
+  //         'هل أنت متأكد من ${newValue ? 'تفعيل' : 'إلغاء تفعيل'} قسم $sectionName؟',
+  //         style: TextStyle(fontSize: 14.rf, color: AppColors.grey600),
+  //       ),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(dialogContext),
+  //           child: Text(
+  //             'إلغاء',
+  //             style: TextStyle(fontSize: 14.rf, color: AppColors.grey600),
+  //           ),
+  //         ),
+  //         ElevatedButton(
+  //           onPressed: () {
+  //             Navigator.pop(dialogContext);
+  //             onConfirm();
+  //           },
+  //           style: ElevatedButton.styleFrom(
+  //             backgroundColor: AppColors.primaryRed,
+  //             foregroundColor: Colors.white,
+  //             shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.circular(8),
+  //             ),
+  //           ),
+  //           child: Text(
+  //             'تأكيد',
+  //             style: TextStyle(fontSize: 14.rf, fontWeight: FontWeight.w600),
+  //           ),
+  //         ),
+  //       ],
+  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+  //       backgroundColor: Colors.white,
+  //     ),
+  //   );
+  // }
 }
 
-class _SwitchButton extends StatelessWidget {
-  const _SwitchButton({
-    required this.label,
-    required this.isEnabled,
-    required this.onChanged,
-  });
+// class _SwitchButton extends StatelessWidget {
+//   const _SwitchButton({
+//     required this.label,
+//     required this.isEnabled,
+//     required this.onChanged,
+//   });
 
-  final String label;
-  final bool isEnabled;
-  final ValueChanged<bool>? onChanged;
+//   final String label;
+//   final bool isEnabled;
+//   final ValueChanged<bool>? onChanged;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: EdgeInsets.symmetric(horizontal: 16.rw, vertical: 12.rh),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(12),
+//         border: Border.all(color: AppColors.grey200),
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withOpacity(0.02),
+//             blurRadius: 8,
+//             offset: const Offset(0, 4),
+//           ),
+//         ],
+//       ),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           Text(
+//             label,
+//             style: TextStyle(
+//               fontSize: 14.rf,
+//               fontWeight: FontWeight.w600,
+//               color: AppColors.textDark,
+//             ),
+//           ),
+//           Switch(
+//             value: isEnabled,
+//             onChanged: onChanged,
+//             activeColor: AppColors.primaryRed,
+//             activeTrackColor: AppColors.primaryRed.withOpacity(0.3),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+class _CitiesContent extends StatelessWidget {
+  const _CitiesContent();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.rw, vertical: 12.rh),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.grey200),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 14.rf,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textDark,
-            ),
-          ),
-          Switch(
-            value: isEnabled,
-            onChanged: onChanged,
-            activeColor: AppColors.primaryRed,
-            activeTrackColor: AppColors.primaryRed.withOpacity(0.3),
-          ),
-        ],
-      ),
-    );
+    return const CitiesScreen();
   }
 }
+
 class _BlacklistContent extends StatelessWidget {
   const _BlacklistContent();
 

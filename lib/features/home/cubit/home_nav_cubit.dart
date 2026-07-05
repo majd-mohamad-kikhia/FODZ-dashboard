@@ -89,6 +89,7 @@ enum HomeSection {
   finance,
   blacklist,
   homeAds,
+  cities,
 }
 
 extension HomeSectionDescriptor on HomeSection {
@@ -108,6 +109,8 @@ extension HomeSectionDescriptor on HomeSection {
         return 'قائمة الحظر';
       case HomeSection.homeAds:
         return 'إعلانات الرئيسية';
+      case HomeSection.cities:
+        return 'المدن';
     }
   }
 
@@ -127,6 +130,8 @@ extension HomeSectionDescriptor on HomeSection {
         return Icons.block_rounded;
       case HomeSection.homeAds:
         return Icons.ad_units_rounded;
+      case HomeSection.cities:
+        return Icons.location_city_rounded;
     }
   }
 }

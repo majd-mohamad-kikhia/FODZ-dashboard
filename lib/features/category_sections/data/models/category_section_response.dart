@@ -75,12 +75,14 @@ class CategoryProduct {
   final String name;
   final String salePrice;
   final String description;
+  final String? photoUrl;
 
   CategoryProduct({
     required this.id,
     required this.name,
     required this.salePrice,
     required this.description,
+    this.photoUrl,
   });
 
   factory CategoryProduct.fromJson(Map<String, dynamic> json) {
@@ -89,6 +91,7 @@ class CategoryProduct {
       name: json['name'] ?? '',
       salePrice: json['salePrice'] ?? '0',
       description: json['description'] ?? '',
+      photoUrl: json['photoUrl'] as String?,
     );
   }
 
@@ -98,6 +101,7 @@ class CategoryProduct {
       'name': name,
       'salePrice': salePrice,
       'description': description,
+      if (photoUrl != null) 'photoUrl': photoUrl,
     };
   }
 }

@@ -61,18 +61,21 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
 
   Future<void> _initialize() async {
     try {
+      if (isClosed) return;
       emit(state.copyWith(status: RestaurantsStatus.loading));
 
       final result = await _restaurantsClient.fetchRestaurants();
 
       result.fold(
         (error) {
+          if (isClosed) return;
           emit(state.copyWith(
             status: RestaurantsStatus.error,
             errorMessage: AppStrings.localizeBackendMessage(error.message ?? 'فشل في تحميل المطاعم', const Locale('ar')),
           ));
         },
         (restaurants) {
+          if (isClosed) return;
           emit(state.copyWith(
             status: RestaurantsStatus.success,
             restaurants: restaurants,
@@ -80,10 +83,8 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
         },
       );
     } catch (e) {
-      if (e is DioException && e.type == DioExceptionType.cancel) {
-        // Ignore cancel exceptions during fast navigation
-        return;
-      }
+      if (e is DioException && e.type == DioExceptionType.cancel) return;
+      if (isClosed) return;
       emit(state.copyWith(
         status: RestaurantsStatus.error,
         errorMessage: 'Failed to load restaurants: $e',
