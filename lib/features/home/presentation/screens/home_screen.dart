@@ -195,6 +195,8 @@ class _SideNavigation extends StatelessWidget {
                 );
               },
             ),
+            SizedBox(height: 80.rh),
+            _VersionInfo(),
           ],
         ),
       ),
@@ -248,6 +250,39 @@ class _SideNavButton extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _VersionInfo extends StatelessWidget {
+  const _VersionInfo();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.info_outline_rounded,
+            color: AppColors.grey600,
+            size: 16.rf,
+          ),
+          SizedBox(width: 8),
+          Text(
+            'الإصدار 1.0.0',
+            style: TextStyle(
+              fontSize: 11.rf,
+              fontWeight: FontWeight.w500,
+              color: AppColors.grey600,
+            ),
+          ),
+        ],
       ),
     );
   }
