@@ -171,34 +171,42 @@ class _SideNavigation extends StatelessWidget {
         color: const Color.fromARGB(255, 255, 211, 211).withOpacity(0.2),
         border: Border(left: BorderSide(color: AppColors.grey200, width: 1)),
       ),
-      child: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 50.rw, vertical: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            50.vSpace,
-            BlocBuilder<HomeNavCubit, HomeNavState>(
-              builder: (context, state) {
-                final sections = HomeSection.values;
-                return Column(
-                  children: [
-                    for (int index = 0; index < sections.length; index++) ...[
-                      if (index != 0) SizedBox(height: 50.rh),
-                      _SideNavButton(
-                        section: sections[index],
-                        isActive: state.selectedSection == sections[index],
-                        onTap: () =>
-                            context.read<HomeNavCubit>().selectSection(sections[index]),
-                      ),
-                    ],
-                  ],
-                );
-              },
+      child: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 50.rw, vertical: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  50.vSpace,
+                  BlocBuilder<HomeNavCubit, HomeNavState>(
+                    builder: (context, state) {
+                      final sections = HomeSection.values;
+                      return Column(
+                        children: [
+                          for (int index = 0; index < sections.length; index++) ...[
+                            if (index != 0) SizedBox(height: 50.rh),
+                            _SideNavButton(
+                              section: sections[index],
+                              isActive: state.selectedSection == sections[index],
+                              onTap: () =>
+                                  context.read<HomeNavCubit>().selectSection(sections[index]),
+                            ),
+                          ],
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 80.rh),
-            _VersionInfo(),
-          ],
-        ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 50.rw, vertical: 24),
+            child: _VersionInfo(),
+          ),
+        ],
       ),
     );
   }
