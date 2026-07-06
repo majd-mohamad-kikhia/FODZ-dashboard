@@ -8,7 +8,7 @@ class EndPoints {
   EndPoints._internalKey();
 
   static const String baseUrl =
-      'http://10.20.127.59:2801/api/'; //'https://fodz.ma-core.net/api/';
+      'http://192.168.214.62:2801/api/'; //'https://fodz.ma-core.net/api/';
   static const String login = 'auth/admin/login';
   static const String getRestaurant = 'admin/restaurants';
   static const String getProducts = 'admin/orders';

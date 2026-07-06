@@ -70,33 +70,6 @@ class _MoneyManagementView extends StatelessWidget {
                   ],
                 ),
               ),
-              BlocBuilder<ConfigCubit, ConfigState>(
-                builder: (context, state) {
-                  final isLoading = state.status == ConfigStatus.saving;
-                  return ElevatedButton.icon(
-                    onPressed: isLoading ? null : () => context.read<ConfigCubit>().saveConfig(),
-                    style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryRed,
-                  padding: EdgeInsets.symmetric(horizontal: 13.rw, vertical: 12.rh),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.rw)),
-                ),
-                      icon: isLoading
-                          ? SizedBox(
-                              width: 18,
-                              height: 18,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            )
-                          : const Icon(Icons.save_rounded, size: 18),
-                      label: Text(
-                        isLoading ? 'جاري الحفظ...' : 'حفظ التعديلات',
-                        style: TextStyle(fontSize: 12.rf, fontWeight: FontWeight.w600, color: Colors.white),
-                      ),
-                    );
-                },
-              ),
             ],
           ),
           SizedBox(height: 28.rh),
@@ -180,6 +153,39 @@ class _MoneyManagementView extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
+          ),
+          BlocBuilder<ConfigCubit, ConfigState>(
+            builder: (context, state) {
+              if (!state.hasChanges) return const SizedBox.shrink();
+              final isLoading = state.status == ConfigStatus.saving;
+              return Padding(
+                padding: EdgeInsets.only(top: 24.rh),
+                child: Center(
+                  child: ElevatedButton.icon(
+                    onPressed: isLoading ? null : () => context.read<ConfigCubit>().saveConfig(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryRed,
+                      padding: EdgeInsets.symmetric(horizontal: 24.rw, vertical: 14.rh),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.rw)),
+                    ),
+                    icon: isLoading
+                        ? SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
+                        : const Icon(Icons.save_rounded, size: 18),
+                    label: Text(
+                      isLoading ? 'جاري الحفظ...' : 'حفظ التعديلات',
+                      style: TextStyle(fontSize: 13.rf, fontWeight: FontWeight.w600, color: Colors.white),
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),

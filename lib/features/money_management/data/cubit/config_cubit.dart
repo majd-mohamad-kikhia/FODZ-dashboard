@@ -29,6 +29,9 @@ class ConfigState {
   final bool restaurantKillSwitch;
   final bool plessingKillSwitch;
 
+  // Track if user has made changes
+  final bool hasChanges;
+
   ConfigState({
     this.status = ConfigStatus.initial,
     this.configs = const [],
@@ -43,6 +46,7 @@ class ConfigState {
     this.homeKillSwitch = false,
     this.restaurantKillSwitch = false,
     this.plessingKillSwitch = false,
+    this.hasChanges = false,
   });
 
   ConfigState copyWith({
@@ -59,6 +63,7 @@ class ConfigState {
     bool? homeKillSwitch,
     bool? restaurantKillSwitch,
     bool? plessingKillSwitch,
+    bool? hasChanges,
   }) {
     return ConfigState(
       status: status ?? this.status,
@@ -74,6 +79,7 @@ class ConfigState {
       homeKillSwitch: homeKillSwitch ?? this.homeKillSwitch,
       restaurantKillSwitch: restaurantKillSwitch ?? this.restaurantKillSwitch,
       plessingKillSwitch: plessingKillSwitch ?? this.plessingKillSwitch,
+      hasChanges: hasChanges ?? this.hasChanges,
     );
   }
 }
@@ -89,9 +95,34 @@ class ConfigCubit extends Cubit<ConfigState> {
   final TextEditingController systemFeesController = TextEditingController();
   final TextEditingController bankNumberController = TextEditingController();
 
-  ConfigCubit() 
+  ConfigCubit()
       : _client = ConfigClientImpl(NetworkServices()),
-        super(ConfigState());
+        super(ConfigState()) {
+    _addListeners();
+  }
+
+  void _addListeners() {
+    baseKmController.addListener(_checkForChanges);
+    basePriceController.addListener(_checkForChanges);
+    afterBasePriceController.addListener(_checkForChanges);
+    dManPercentageController.addListener(_checkForChanges);
+    systemFeesController.addListener(_checkForChanges);
+    bankNumberController.addListener(_checkForChanges);
+  }
+
+  void _checkForChanges() {
+    final changed =
+        baseKmController.text != state.baseKm ||
+        basePriceController.text != state.basePrice ||
+        afterBasePriceController.text != state.afterBasePrice ||
+        dManPercentageController.text != state.dManPercentage ||
+        systemFeesController.text != state.systemFees ||
+        bankNumberController.text != state.bankNumber;
+
+    if (changed != state.hasChanges) {
+      emit(state.copyWith(hasChanges: changed));
+    }
+  }
 
   Future<void> fetchConfig() async {
     try {
@@ -177,6 +208,7 @@ class ConfigCubit extends Cubit<ConfigState> {
               homeKillSwitch: homeKillSwitch,
               restaurantKillSwitch: restaurantKillSwitch,
               plessingKillSwitch: plessingKillSwitch,
+              hasChanges: false,
             ));
           } catch (_) {}
         },
@@ -231,6 +263,7 @@ class ConfigCubit extends Cubit<ConfigState> {
             status: ConfigStatus.saved,
             successMessage: AppStrings.localizeBackendMessage(message, const Locale('ar')),
             configs: configs,
+            hasChanges: false,
           ));
         } catch (_) {}
       },
